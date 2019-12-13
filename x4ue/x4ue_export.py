@@ -37,7 +37,8 @@ from .x4ue_funcs import (
     set_scale_x100, revert_scale_x100,
     create_copy_objects, delete_copy_objects,
     rename_objects_for_export, revert_object_name,
-    set_action_scale_x100, revert_action_scale_x100
+    set_action_scale_x100, revert_action_scale_x100,
+    set_scale_x100_no_armature
 )
 from .x4ue_log import (
     debuglog, infolog, warnlog, errorlog, set_log_level
@@ -120,6 +121,8 @@ class X4UE_OT_export_fbx(bpy.types.Operator):
         list_target_objects = []
         list_target_actions = []
 
+        no_armature_mode = False
+
         try:
 
             # Initial checks
@@ -143,11 +146,31 @@ class X4UE_OT_export_fbx(bpy.types.Operator):
                         break
 
             if not is_armature(bpy.context.active_object):
-                warnlog("Not found selected armature")
-                self.report({"ERROR"}, "Select the armature to export")
-                return {"FINISHED"}
 
-            debuglog("Target armature: ", bpy.context.active_object.name)
+                # TODO Need Implemetnt NO ARMATURE mode
+                no_armature_mode = True
+                debuglog("NO ARMATURE MODE Enabled")
+
+                selected_parent = [ obj for obj in bpy.context.selected_objects if obj.parent is None]
+                debuglog("Selected parent:", selected_parent)
+
+                if len(selected_parent) == 0:
+                    warnlog("No root object")
+                    self.report({"ERROR"}, "No root object detected. Plase select target object(s) structure include root.")
+                    return {"FINISHED"}
+
+                if len(selected_parent) > 1:
+                    warnlog("Multi root object detected")
+                    self.report({"ERROR"}, "Multi root object detected. Please select single structure.")
+                    return {"FINISHED"}
+                
+                target_armature_name = selected_parent[0].name
+
+
+            if no_armature_mode:
+                debuglog("(NO ARMATURE MODE) Target object:", bpy.context.active_object.name)
+            else:
+                debuglog("Target armature: ", bpy.context.active_object.name)
 
             armature_base_name = bpy.context.active_object.name
             if bpy.context.active_object.proxy:
@@ -164,10 +187,15 @@ class X4UE_OT_export_fbx(bpy.types.Operator):
             context.scene.tool_settings.use_keyframe_insert_auto = False
 
             # Create copy objects
-            list_target_objects = create_copy_objects(target_armature_name)
+            list_target_objects = create_copy_objects(target_armature_name, no_armature_mode)
             list_target_actions = [a.name for a in bpy.data.actions]
 
-            set_scale_x100(target_armature_name)
+            if no_armature_mode:
+                set_scale_x100_no_armature(list_target_objects)
+            else:
+                set_scale_x100(target_armature_name)
+            
+
             set_action_scale_x100(list_target_actions)
 
             # Select exportable only

@@ -14,14 +14,17 @@ from .x4ue_utils import (
 )
 
 
-def create_copy_objects(armature_name):
+def create_copy_objects(armature_name, no_armature_mode=False):
 
     debuglog("Begin create copies")
 
     copy_armature_name = armature_name + X4UE_OBJ_SUFFIX
 
     list_stored_actions = [action.name for action in bpy.data.actions]
-    list_char_objects = get_char_objects(armature_name)
+    if no_armature_mode:
+        list_char_objects = [ obj.name for obj in bpy.context.selected_objects ]
+    else:
+        list_char_objects = get_char_objects(armature_name)
 
     list_copy_objects = []
 
@@ -63,26 +66,39 @@ def create_copy_objects(armature_name):
         # add to list
         list_copy_objects.append(copy_object_name)
 
-    # Reparent meshes to armature
-    for obj_name in list_copy_objects:
-        copy_obj = bpy.data.objects[obj_name]
-        if is_mesh(copy_obj):
-            debuglog("Reparent mesh to armature.",
-                     obj_name, "->", copy_armature_name)
-            copy_obj_mat = copy_obj.matrix_world.copy()
-            copy_obj.parent = bpy.data.objects[copy_armature_name]
-            copy_obj.matrix_world = copy_obj_mat
+    if no_armature_mode:
+        # Reparent duplicate objects
+        for obj_name in list_copy_objects:
+            copy_obj = bpy.data.objects[obj_name]
+            if is_mesh(copy_obj) and copy_obj.parent is not None:
+                reparent_name = copy_obj.parent.name + X4UE_OBJ_SUFFIX
+                debuglog("Reparent mesh to duplicated mesh.", obj_name, "->", reparent_name)
+                copy_obj_mat = copy_obj.matrix_world.copy()
+                copy_obj.parent = bpy.data.objects[reparent_name]
+                copy_obj.matrix_world = copy_obj_mat
 
-    # Reset armature target object
-    for obj_name in list_copy_objects:
-        copy_obj = bpy.data.objects[obj_name]
-        if is_mesh(copy_obj):
-            if len(copy_obj.modifiers) > 0:
-                for mod in copy_obj.modifiers:
-                    if is_armature(mod):
-                        if mod.object is not None:
-                            if mod.object.name == armature_name:
-                                mod.object = bpy.data.objects[copy_armature_name]
+
+    else:
+        # Reparent meshes to armature
+        for obj_name in list_copy_objects:
+            copy_obj = bpy.data.objects[obj_name]
+            if is_mesh(copy_obj):
+                debuglog("Reparent mesh to armature.",
+                        obj_name, "->", copy_armature_name)
+                copy_obj_mat = copy_obj.matrix_world.copy()
+                copy_obj.parent = bpy.data.objects[copy_armature_name]
+                copy_obj.matrix_world = copy_obj_mat
+
+        # Reset armature target object
+        for obj_name in list_copy_objects:
+            copy_obj = bpy.data.objects[obj_name]
+            if is_mesh(copy_obj):
+                if len(copy_obj.modifiers) > 0:
+                    for mod in copy_obj.modifiers:
+                        if is_armature(mod):
+                            if mod.object is not None:
+                                if mod.object.name == armature_name:
+                                    mod.object = bpy.data.objects[copy_armature_name]
     
 
     for action in bpy.data.actions:
@@ -253,6 +269,54 @@ def set_scale_x100(armature_name):
 
     infolog("Mesh scale applied")
 
+
+def set_scale_x100_no_armature(target_meshes):
+
+    relation = {}
+
+    for mesh in target_meshes:
+        mesh_obj = bpy.data.objects[mesh]
+        if not is_mesh(mesh_obj):
+            continue
+
+        has_parent = False
+        
+        if mesh_obj.parent is not None:
+            relation[mesh_obj.name] = mesh_obj.parent.name
+            mesh_obj.parent = None
+            has_parent = True
+
+        bpy.ops.object.mode_set(mode="OBJECT")
+        bpy.ops.object.select_all(action="DESELECT")
+
+        debuglog("Modify mesh scale:", mesh_obj.name)
+        set_active_object(mesh_obj.name)
+        # to x100
+        mesh_obj.scale *= 100
+        bpy.ops.object.transform_apply(
+            location=False, rotation=False, scale=True
+        )
+       
+        mesh_obj.scale *= 0.01
+        # mesh_obj.parent = parent
+
+        debuglog("Mesh:", mesh_obj.name, ", Scale:", mesh_obj.scale)
+        if has_parent:
+            bpy.ops.object.transform_apply(
+                location=False, rotation=False, scale=True
+            )
+    
+    for o, p in relation.items():
+
+        obj = bpy.data.objects[o]
+        obj_mat = obj.matrix_world.copy()
+        parent = bpy.data.objects[p]
+        parent_mat = parent.matrix_world.copy()
+        obj.parent = parent
+        obj.location = obj_mat.to_translation() - parent_mat.to_translation()
+    
+    infolog("Mesh scale applied")
+        
 def set_action_scale_x100(list_target_actions):
     for action_name in list_target_actions:
         debuglog("Set action x100 scale. action_name:", action_name)

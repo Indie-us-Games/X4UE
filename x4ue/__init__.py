@@ -1,7 +1,7 @@
 bl_info = {
     "name": "X4UE: Exporter for Unreal Engine",
     "author": "T_Sumisaki",
-    "version": (0, 1, 3),
+    "version": (0, 1, 4),
     "blender": (2, 80, 0),
     "location": "File > Import-Export",
     "description": "Custom FBX exporter and tools for UnrealEngine4",
