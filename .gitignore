@@ -108,4 +108,5 @@ venv.bak/
 # Project ignore
 temp/
 .vscode/
+bin/
 

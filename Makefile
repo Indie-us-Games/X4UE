@@ -11,4 +11,4 @@ clean-dev:
 	rm -f bin/x4ue_dev.zip
 
 mkdir-bin:
-	mkdir bin/
+	mkdir -p bin/
