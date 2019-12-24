@@ -14,5 +14,9 @@ Exporter For Unreal Engine
 - 公開
 
 ### v0.1.4 (2019-12-13)
-- Armatureを使用せず、Objectの階層構造を用いて作成したモデルデータを、UE4のFBXインポートオプション `Import Meshes in Bone Hierarchy` をONにしてSkeletalMeshとしてインポートした際に、SkeletonのScaleに100が設定される問題に対応
+- Armatureを使用せず、Objectの階層構造を用いて作成したモデルデータを、UE4のFBXインポートオプション `Import Meshes in Bone Hierarchy` をONにしてSkeletalMeshとしてインポートした際に、SkeletonのScaleに100が設定される問題に対応（NoArmatureMode）
+
+### v0.1.5 (2019-12-24)
+- NoArmatureMode適用時、Emptyオブジェクトを使用できるようにした
+- 人型のようなmulti-ped構造をNoArmatureModeで作成したとき、BoneのLocationが意図しない方向にずれる問題を修正
 
