@@ -26,12 +26,15 @@ def unhide_object(obj):
     obj.hide_set(False)
     obj.hide_viewport = False
 
+
 def hide_object(obj):
     obj.hide_set(True)
     obj.hide_viewport = True
 
+
 def hide_object_visual(obj):
     obj.hide_set(True)
+
 
 def is_object_hidden(obj):
     try:
@@ -49,3 +52,17 @@ def is_mesh(obj):
 
 def is_armature(obj):
     return obj is not None and obj.type == "ARMATURE"
+
+
+def is_emptyobject(obj):
+    return obj is not None and obj.type == "EMPTY"
+
+
+def get_object_relation_depth(obj, level=0):
+    if obj is None:
+        return -1
+
+    if obj.parent is None:
+        return level
+
+    return get_object_relation_depth(obj.parent, level + 1)
