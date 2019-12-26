@@ -71,7 +71,7 @@ def create_copy_objects(armature_name, no_armature_mode=False):
         # Reparent duplicate objects
         for obj_name in list_copy_objects:
             copy_obj = bpy.data.objects[obj_name]
-            if is_mesh(copy_obj) and copy_obj.parent is not None:
+            if copy_obj.parent is not None:
                 reparent_name = copy_obj.parent.name + X4UE_OBJ_SUFFIX
                 debuglog("Reparent mesh to duplicated mesh.",
                          obj_name, "->", reparent_name)
