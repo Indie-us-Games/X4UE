@@ -20,3 +20,6 @@ Exporter For Unreal Engine
 - NoArmatureMode適用時、Emptyオブジェクトを使用できるようにした
 - 人型のようなmulti-ped構造をNoArmatureModeで作成したとき、BoneのLocationが意図しない方向にずれる問題を修正
 
+### v0.1.6 (2019-12-26)
+- NoArmatureMode適用時、Treeの中間にEmptyオブジェクトがあると、SkeletalMeshが分割されてしまう問題を修正
+- Emptyオブジェクトを配置することで、 `Import Meshes in Bone Hierarchy` モードで取り込む際に追加のボーンを作成できるようになった
