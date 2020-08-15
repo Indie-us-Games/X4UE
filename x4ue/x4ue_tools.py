@@ -4,19 +4,16 @@ from . import x4ue_log, x4ue_utils
 
 if "bpy" in locals():
     import importlib
+
     if "x4ue_log" in locals():
         importlib.reload(x4ue_log)
     if "x4ue_utils" in locals():
         importlib.reload(x4ue_utils)
 
-from .x4ue_log import (
-    debuglog, infolog, warnlog, errorlog
-)
+from .x4ue_log import debuglog, infolog, warnlog, errorlog
 
-from .x4ue_utils import (
-    set_active_object,
-    is_mesh, is_armature
-)
+from .x4ue_utils import set_active_object, is_mesh, is_armature
+
 
 class X4UE_OT_delete_action(bpy.types.Operator):
     """ Delete selected action """
@@ -99,14 +96,13 @@ class X4UE_OT_unbind_armature(bpy.types.Operator):
             warnlog("Not found target armature")
             self.report({"ERROR"}, "Require set target armature")
             return {"FINISHED"}
-        
+
         arm_obj = bpy.data.objects[self.target_armature_name]
 
         if not is_armature(arm_obj):
             warnlog("Target object is not armature, name:", self.target_armature_name)
             self.report({"ERROR"}, "Target object is not ARMATURE")
             return {"FINISHED"}
-        
 
         for obj in bpy.data.objects:
             if obj.parent == arm_obj and is_mesh(obj):
@@ -116,16 +112,19 @@ class X4UE_OT_unbind_armature(bpy.types.Operator):
                 if len(obj.modifiers) > 0:
                     for mod in obj.modifiers:
                         if is_armature(mod):
-                            if mod.object is not None and mod.object.name == self.target_armature_name:
+                            if (
+                                mod.object is not None
+                                and mod.object.name == self.target_armature_name
+                            ):
                                 debuglog("Find armature mod, removed. name:", mod.name)
                                 obj.modifiers.remove(mod)
-                
+
                 debuglog("Remove all vertex groups")
                 obj.vertex_groups.clear()
 
                 debuglog("Unparent object fromm armature")
                 obj.parent = None
-        
+
         self.report({"INFO"}, "Unbind armature. Armature=" + self.target_armature_name)
 
         return {"FINISHED"}
@@ -139,7 +138,6 @@ class X4UE_PT_unbind_armature_panel(bpy.types.Panel):
     bl_category = "X4UE Tools"
     bl_label = "Unbind Armature (Experimental)"
     bl_idname = "X4UE_PT_unbind_armature"
-
 
     def draw(self, context):
         layout = self.layout
@@ -162,8 +160,6 @@ class X4UE_PT_unbind_armature_panel(bpy.types.Panel):
             _op.target_armature_name = target_armature_name
         else:
             col.label(text="Select target armature")
-
-        
 
 
 class X4UE_OT_popup_message(bpy.types.Operator):
@@ -194,18 +190,51 @@ class X4UE_OT_popup_message(bpy.types.Operator):
         return wm.invoke_props_dialog(self, width=400)
 
 
+class X4UE_OT_select_action(bpy.types.Operator):
+
+    """ select action """
+
+    bl_idname = "x4ue.select_action"
+    bl_label = "Select action"
+    bl_options = {"UNDO"}
+
+    action_name: bpy.props.StringProperty(default="")
+
+    def execute(self, context):
+
+        use_global_undo = context.preferences.edit.use_global_undo
+        context.preferences.edit.use_global_undo = False
+        try:
+            if self.action_name != "":
+                act = bpy.data.actions.get(self.action_name)
+                if act:
+                    found = False
+                    if len(act.keys()) > 0:
+                        if "x4ue_export" in act.keys():
+                            act["x4ue_export"] = not act["x4ue_export"]
+                            found = True
+                    if not found:
+                        act["x4ue_export"] = False
+        finally:
+            context.preferences.edit.use_global_undo = use_global_undo 
+
+        return {"FINISHED"}
+
+
 classes = (
     X4UE_OT_delete_action,
     X4UE_PT_delete_action_panel,
     X4UE_OT_unbind_armature,
     X4UE_PT_unbind_armature_panel,
-    X4UE_OT_popup_message
+    X4UE_OT_popup_message,
+    X4UE_OT_select_action,
 )
 
 
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
+
 
 def unregister():
     for cls in classes:

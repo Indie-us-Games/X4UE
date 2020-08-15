@@ -2109,16 +2109,32 @@ def fbx_animations(scene_data):
             org_act = ob.animation_data.action
             path_resolve = ob.path_resolve
 
+            export_mode = bpy.context.scene.x4ue_mode_export_animations
+            print("export_mode->", export_mode)
+
             for act in bpy.data.actions:
-                # For now, *all* paths in the action must be valid for the object, to validate the action.
-                # Unless that action was already assigned to the object!
-                if act != org_act and not validate_actions(act, path_resolve):
-                    continue
-                ob.animation_data.action = act
-                frame_start, frame_end = act.frame_range  # sic!
-                add_anim(animations, animated,
-                         fbx_animations_do(scene_data, (ob, act), frame_start, frame_end, True,
-                                           objects={ob_obj}, force_keep=True))
+
+                export_action = False
+
+                if export_mode == "ALL":
+                    export_action = True
+
+                if export_mode == "SELECT":
+                    if len(act.keys()) > 0:
+                        if "x4ue_export" in act.keys():
+                            if act["x4ue_export"]:
+                                export_action = True
+
+                if export_action:
+                    # For now, *all* paths in the action must be valid for the object, to validate the action.
+                    # Unless that action was already assigned to the object!
+                    if act != org_act and not validate_actions(act, path_resolve):
+                        continue
+                    ob.animation_data.action = act
+                    frame_start, frame_end = act.frame_range  # sic!
+                    add_anim(animations, animated,
+                            fbx_animations_do(scene_data, (ob, act), frame_start, frame_end, True,
+                                            objects={ob_obj}, force_keep=True))
                 # Ugly! :/
                 if pbones_matrices is not ...:
                     for pbo, mat in zip(ob.pose.bones, pbones_matrices):
