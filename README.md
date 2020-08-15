@@ -23,3 +23,14 @@ Exporter For Unreal Engine
 ### v0.1.6 (2019-12-26)
 - NoArmatureMode適用時、Treeの中間にEmptyオブジェクトがあると、SkeletalMeshが分割されてしまう問題を修正
 - Emptyオブジェクトを配置することで、 `Import Meshes in Bone Hierarchy` モードで取り込む際に追加のボーンを作成できるようになった
+
+### v0.1.7 (2020-08-15)
+- Export時にAction(Animation)を選択式で出力するオプション(ExportMode)を追加
+```
+- All animation export
+  全アニメーションを出力
+- Select export animation
+  アニメーションを選択出力
+- No animation export (Armature only)
+  アニメーションを出力しない
+```
