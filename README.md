@@ -1,6 +1,9 @@
 # X4UE: Exporter for Unreal Engine
 Exporter For Unreal Engine
 
+# X4UEについて
+BlenderからUnrealEngine4へSkeletalMeshを出力する際のスケール、ルートボーンの向きに関する問題を自動解決するFBXエクスポーターアドオンです
+
 ## インストール方法
 
 ### ソースから
