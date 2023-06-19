@@ -220,9 +220,6 @@ class X4UE_OT_export_fbx(bpy.types.Operator):
                 debuglog("Target armature: ", bpy.context.active_object.name)
 
             armature_base_name = bpy.context.active_object.name
-            if bpy.context.active_object.proxy:
-                armature_base_name = bpy.context.active_object.proxy.name
-                debuglog("The armature is a proxy. Real name = ", armature_base_name)
 
             # Set main target armature name
             target_armature_name = bpy.context.active_object.name
