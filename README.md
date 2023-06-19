@@ -2,7 +2,7 @@
 Exporter For Unreal Engine
 
 # X4UEについて
-BlenderからUnrealEngine4へSkeletalMeshを出力する際のスケール、ルートボーンの向きに関する問題を自動解決するFBXエクスポーターアドオンです
+BlenderからUnrealEngineへSkeletalMeshを出力する際のスケール、ルートボーンの向きに関する問題を自動解決するFBXエクスポーターアドオンです
 
 ## インストール方法
 
@@ -37,3 +37,7 @@ BlenderからUnrealEngine4へSkeletalMeshを出力する際のスケール、ル
 - No animation export (Armature only)
   アニメーションを出力しない
 ```
+
+### v0.1.8 (2023-06-19)
+- Blender3.2以降でExport FBX for UE4時にエラーが出る問題を修正
+- UE4表記をUEに修正

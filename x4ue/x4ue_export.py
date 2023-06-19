@@ -56,7 +56,7 @@ class X4UE_OT_export_fbx_panel(bpy.types.Operator, ExportHelper):
 
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_label = "UE4 FBX Export"
+    bl_label = "UE FBX Export"
     bl_idname = "id.x4ue_export_fbx_panel"
 
     filename_ext = ".fbx"
@@ -129,7 +129,7 @@ class X4UE_OT_export_fbx(bpy.types.Operator):
     """Export armature in .fbx file format"""
 
     bl_idname = "id.export_fbx"
-    bl_label = "Export .FBX(for UE4)"
+    bl_label = "Export .FBX(for UE)"
 
     def execute(self, context):
 

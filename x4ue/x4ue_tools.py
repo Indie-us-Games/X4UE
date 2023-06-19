@@ -165,7 +165,7 @@ class X4UE_PT_unbind_armature_panel(bpy.types.Panel):
 class X4UE_OT_popup_message(bpy.types.Operator):
     """ Message popup window """
 
-    bl_label = "FBX Exporter for UE4"
+    bl_label = "FBX Exporter for UE"
     bl_idname = "x4ue.popup_message"
 
     message = ""

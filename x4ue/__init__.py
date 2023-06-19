@@ -1,10 +1,10 @@
 bl_info = {
     "name": "X4UE: Exporter for Unreal Engine",
     "author": "T_Sumisaki",
-    "version": (0, 1, 7),
+    "version": (0, 1, 8),
     "blender": (2, 80, 0),
     "location": "File > Import-Export",
-    "description": "Custom FBX exporter and tools for UnrealEngine4",
+    "description": "Custom FBX exporter and tools for UnrealEngine",
     "category": "Import-Export",
     "warning": "This plugin is alpha development version."
 }
@@ -37,7 +37,7 @@ if "bpy" in locals():
 def menu_func_export(self, context):
     self.layout.operator(
         x4ue_export.X4UE_OT_export_fbx_panel.bl_idname,
-        text="FBX for UE4 (.fbx)"
+        text="FBX for UE (.fbx)"
     )	
 
 

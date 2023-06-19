@@ -44,7 +44,7 @@ from bpy_extras.io_utils import (
 class X4UE_OT_export_fbx_wrap(bpy.types.Operator, ExportHelper):
     """Write a FBX file"""
     bl_idname = "x4ue_export_scene.fbx"
-    bl_label = "Export FBX for UnrealEngine4"
+    bl_label = "Export FBX for UnrealEngine"
     bl_options = {'UNDO', 'PRESET'}
 
     filename_ext = ".fbx"
