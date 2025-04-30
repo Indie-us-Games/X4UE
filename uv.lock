@@ -1,0 +1,23 @@
+version = 1
+revision = 1
+requires-python = "==3.12.*"
+
+[[package]]
+name = "fake-bpy-module-4-2"
+version = "20250130"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/6c/ea/baf98bcee40d9657619ae5dc0dd25c81c89873c08e73ecf87a81f44e843a/fake_bpy_module_4_2-20250130.tar.gz", hash = "sha256:9a34f357a221dda0c7916d05510d1f91d531975c3f4225b538932ac68d1f416b", size = 929124 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fc/8a/5e9ef4ac48760c1011234f35d0ba21a346e3c8775bc18f71807be68d8c32/fake_bpy_module_4.2-20250130-py3-none-any.whl", hash = "sha256:917fa2249401ed124051ca8f08509e797635109f57fbcbb5fed449e25f427acf", size = 1046646 },
+]
+
+[[package]]
+name = "x4ue"
+version = "0.1.8"
+source = { virtual = "." }
+dependencies = [
+    { name = "fake-bpy-module-4-2" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "fake-bpy-module-4-2", specifier = ">=20250130" }]
