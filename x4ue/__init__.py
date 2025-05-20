@@ -2,7 +2,7 @@ bl_info = {
     "name": "X4UE: Exporter for Unreal Engine",
     "author": "T_Sumisaki",
     "version": (0, 1, 8),
-    "blender": (2, 80, 0),
+    "blender": (4, 2, 0),
     "location": "File > Import-Export",
     "description": "Custom FBX exporter and tools for UnrealEngine",
     "category": "Import-Export",
@@ -11,8 +11,8 @@ bl_info = {
 
 
 import bpy
-from . import x4ue_export, x4ue_log, x4ue_funcs, x4ue_utils, x4ue_prefs, x4ue_tools
-from .fbx_export import x4ue_fbx_init
+from x4ue import x4ue_export, x4ue_log, x4ue_funcs, x4ue_utils, x4ue_prefs, x4ue_tools
+from x4ue.fbx_export import x4ue_fbx_init
 
 if "bpy" in locals():
     import importlib

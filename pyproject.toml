@@ -1,0 +1,9 @@
+[project]
+name = "x4ue"
+version = "0.1.8"
+description = "X4UE: Exporter for Unreal Engine"
+readme = "README.md"
+requires-python = "==3.12.*"
+dependencies = [
+    "fake-bpy-module-4-2>=20250130",
+]
