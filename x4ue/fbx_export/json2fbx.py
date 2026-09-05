@@ -1,7 +1,25 @@
 #!/usr/bin/env python3
-# SPDX-FileCopyrightText: 2014-2023 Blender Foundation
+# ##### BEGIN GPL LICENSE BLOCK #####
 #
-# SPDX-License-Identifier: GPL-2.0-or-later
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  as published by the Free Software Foundation; either version 2
+#  of the License, or (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software Foundation,
+#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# ##### END GPL LICENSE BLOCK #####
+
+# <pep8 compliant>
+
+# Script copyright (C) 2014 Blender Foundation
 
 """
 Usage
@@ -27,10 +45,8 @@ for each property.
 
 The types are as follows:
 
-* 'Z': - INT8
 * 'Y': - INT16
-* 'B': - BOOL
-* 'C': - CHAR
+* 'C': - BOOL
 * 'I': - INT32
 * 'F': - FLOAT32
 * 'D': - FLOAT64
@@ -65,13 +81,8 @@ def parse_json_rec(fbx_root, json_node):
 
     e = elem_empty(fbx_root, name.encode())
     for d, dt in zip(data, data_types):
-        if dt == "B":
+        if dt == "C":
             e.add_bool(d)
-        elif dt == "C":
-            d = eval('b"""' + d + '"""')
-            e.add_char(d)
-        elif dt == "Z":
-            e.add_int8(d)
         elif dt == "Y":
             e.add_int16(d)
         elif dt == "I":
@@ -133,10 +144,10 @@ def json2fbx(fn):
 
     fn_fbx = "%s.fbx" % os.path.splitext(fn)[0]
     print("Writing: %r " % fn_fbx, end="")
+    json_root = []
     with open(fn) as f_json:
         json_root = json.load(f_json)
-    with encode_bin.FBXElem.enable_multithreading_cm():
-        fbx_root, fbx_version = parse_json(json_root)
+    fbx_root, fbx_version = parse_json(json_root)
     print("(Version %d) ..." % fbx_version)
     encode_bin.write(fn_fbx, fbx_root, fbx_version)
 

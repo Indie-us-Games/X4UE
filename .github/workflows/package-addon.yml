@@ -1,0 +1,37 @@
+name: Package X4UE Blender add-on
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Build Blender add-on archive
+        run: python tools/package_addon.py --output "dist/X4UE-${{ github.ref_name }}.zip"
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: X4UE-${{ github.ref_name }}
+          path: dist/X4UE-${{ github.ref_name }}.zip
+
+      - name: Publish tagged release asset
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" "dist/X4UE-${{ github.ref_name }}.zip" --title "X4UE ${{ github.ref_name }}" --generate-notes

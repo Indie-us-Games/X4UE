@@ -13,6 +13,7 @@ from .x4ue_utils import (
     is_mesh, is_armature, is_emptyobject,
     get_object_relation_depth
 )
+from .fbx_export.fbx_utils import iter_action_fcurves
 
 
 def create_copy_objects(armature_name, no_armature_mode=False):
@@ -308,7 +309,7 @@ def set_action_scale_x100(list_target_actions):
     for action_name in list_target_actions:
         debuglog("Set action x100 scale. action_name:", action_name)
         action = bpy.data.actions[action_name]
-        for fcurve in action.fcurves:
+        for fcurve in iter_action_fcurves(action):
             if 'location' in fcurve.data_path:
                 for point in fcurve.keyframe_points:
                     point.co[1] *= 100
@@ -320,7 +321,7 @@ def revert_action_scale_x100(list_target_actions):
     for action_name in list_target_actions:
         debuglog("Revert action x100 scale. action_name:", action_name)
         action = bpy.data.actions[action_name]
-        for fcurve in action.fcurves:
+        for fcurve in iter_action_fcurves(action):
             if 'location' in fcurve.data_path:
                 for point in fcurve.keyframe_points:
                     point.co[1] *= 0.01

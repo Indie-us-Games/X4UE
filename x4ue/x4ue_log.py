@@ -33,10 +33,10 @@ def set_log_level(level):
     if level == "ERROR":
         __current_log_level = LOG_ERROR
         return
-    
+
     # DEFAULT
     __current_log_level = DEFAULT_LOG_LEVEL
-    
+
 
 def debuglog(*values):
     __printlog(*values, level=LOG_DEBUG)

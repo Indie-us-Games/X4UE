@@ -110,3 +110,6 @@ temp/
 .vscode/
 bin/
 
+# Local Blender test assets.
+BlenderTestData/
+

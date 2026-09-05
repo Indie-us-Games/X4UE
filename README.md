@@ -6,10 +6,21 @@ BlenderからUnrealEngineへSkeletalMeshを出力する際のスケール、ル�
 
 ## インストール方法
 
-### ソースから
-- リポジトリをチェックアウトorダウンロードする
-- `x4ue` フォルダをzip圧縮する
-- Blenderの`Preference > Addon`で、圧縮したzipファイルをAddonとしてインストールする
+### 一般ユーザー向け
+
+GitHubのReleasesページから`X4UE-*.zip`をダウンロードし、Blenderの`Preferences > Add-ons > Install`でインストールしてください。
+
+GitHubの`Code > Download ZIP`はリポジトリ全体のソースアーカイブであり、Blender用のアドオンZIPではありません。
+
+### ソースからパッケージを作成する場合
+
+リポジトリのルートで次を実行します。
+
+```text
+python tools/package_addon.py --output dist/X4UE-Blender.zip
+```
+
+生成されたZIPは、Blenderが要求する`x4ue/`を最上位に含みます。
 
 
 ## 変更履歴
