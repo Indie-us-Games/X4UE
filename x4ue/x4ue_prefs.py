@@ -9,10 +9,10 @@ class X4UE_MT_addon_preferences(bpy.types.AddonPreferences):
     def draw(self, context):
         col = self.layout.column(align=True)
         col.prop(context.scene, "x4ue_log_level")
-    
+
 
 def register():
-    
+
     bpy.utils.register_class(X4UE_MT_addon_preferences)
 
     bpy.types.Scene.x4ue_log_level = bpy.props.EnumProperty(

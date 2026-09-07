@@ -216,7 +216,7 @@ class X4UE_OT_select_action(bpy.types.Operator):
                     if not found:
                         act["x4ue_export"] = False
         finally:
-            context.preferences.edit.use_global_undo = use_global_undo 
+            context.preferences.edit.use_global_undo = use_global_undo
 
         return {"FINISHED"}
 

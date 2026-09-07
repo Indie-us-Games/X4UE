@@ -2,7 +2,7 @@ bl_info = {
     "name": "X4UE: Exporter for Unreal Engine",
     "author": "T_Sumisaki",
     "version": (0, 1, 8),
-    "blender": (4, 2, 0),
+    "blender": (2, 80, 0),
     "location": "File > Import-Export",
     "description": "Custom FBX exporter and tools for UnrealEngine",
     "category": "Import-Export",
@@ -11,8 +11,8 @@ bl_info = {
 
 
 import bpy
-from x4ue import x4ue_export, x4ue_log, x4ue_funcs, x4ue_utils, x4ue_prefs, x4ue_tools
-from x4ue.fbx_export import x4ue_fbx_init
+from . import x4ue_export, x4ue_log, x4ue_funcs, x4ue_utils, x4ue_prefs, x4ue_tools
+from .fbx_export import x4ue_fbx_init, export_fbx_bin, import_fbx, fbx_utils
 
 if "bpy" in locals():
     import importlib
@@ -20,6 +20,10 @@ if "bpy" in locals():
         importlib.reload(x4ue_export)
     if "x4ue_fbx_init" in locals():
         importlib.reload(x4ue_fbx_init)
+        # Add FBX export module reloads
+        importlib.reload(export_fbx_bin)
+        importlib.reload(import_fbx)
+        importlib.reload(fbx_utils)
     if "x4ue_log" in locals():
         importlib.reload(x4ue_log)
     if "x4ue_funcs" in locals():
@@ -38,7 +42,7 @@ def menu_func_export(self, context):
     self.layout.operator(
         x4ue_export.X4UE_OT_export_fbx_panel.bl_idname,
         text="FBX for UE (.fbx)"
-    )	
+    )
 
 
 def register():

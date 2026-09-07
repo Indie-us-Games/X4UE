@@ -348,7 +348,9 @@ def register():
             ("EDGE", "Edge", "Write edge smoothing"),
         ),
         description="Export smoothing information (prefer 'Normal Only' option if your target importer understand split normals)",
-        default="OFF",
+        # Unreal Engine expects FBX smoothing groups.  Face smoothing maps
+        # Blender's per-face smooth state directly to LayerElementSmoothing.
+        default="FACE",
     )
     bpy.types.Scene.x4ue_bone_axis_primary_export = bpy.props.EnumProperty(
         name="Primary Bone Axis",

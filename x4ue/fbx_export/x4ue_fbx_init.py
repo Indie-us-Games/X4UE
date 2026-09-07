@@ -141,7 +141,7 @@ class X4UE_OT_export_fbx_wrap(bpy.types.Operator, ExportHelper):
                    ),
             description="Export smoothing information "
                         "(prefer 'Normals Only' option if your target importer understand split normals)",
-            default='OFF',
+            default='FACE',
             )
     use_mesh_edges: BoolProperty(
             name="Loose Edges",
@@ -174,7 +174,8 @@ class X4UE_OT_export_fbx_wrap(bpy.types.Operator, ExportHelper):
                    ('-Y', "-Y Axis", ""),
                    ('-Z', "-Z Axis", ""),
                    ),
-            default='Y',
+            # Match X4UE's Unreal Engine export preset.
+            default='Z',
             )
     secondary_bone_axis: EnumProperty(
             name="Secondary Bone Axis",
